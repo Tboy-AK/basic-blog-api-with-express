@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 const { platform } = require('os');
 
 module.exports = {
@@ -17,7 +18,7 @@ module.exports = {
   },
 
   rules: {
-    'linebreak-style': ['error', platform === 'win32' ? 'windows' : 'unix'],
+    'linebreak-style': ['error', platform === 'linux' ? 'unix' : 'windows'],
     indent: ['error', 2, { SwitchCase: 1 }],
     'consistent-return': 0,
   },

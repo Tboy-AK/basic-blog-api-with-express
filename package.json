@@ -4,7 +4,9 @@
   "description": "A basic blog API built with the Express.js framework. SkillUp Africa.",
   "main": "server.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
