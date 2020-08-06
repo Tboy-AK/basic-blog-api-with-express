@@ -1,7 +1,7 @@
 # basic-blog-api-with-express
 
 ## Author
-[Tobi Akanji](htps://github.com/Tboy-AK)
+[Tobi Akanji](https://github.com/Tboy-AK)
 
 ## Description
 A basic blog API built with the Express.js framework.

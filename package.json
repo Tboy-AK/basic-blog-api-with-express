@@ -1,0 +1,22 @@
+{
+  "name": "basic-blog-api-with-express",
+  "version": "1.0.0",
+  "description": "A basic blog API built with the Express.js framework. SkillUp Africa.",
+  "main": "server.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tboy-AK/basic-blog-api-with-express.git"
+  },
+  "keywords": [
+    "SkillUp"
+  ],
+  "author": "Tobi Akanji",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tboy-AK/basic-blog-api-with-express/issues"
+  },
+  "homepage": "https://github.com/Tboy-AK/basic-blog-api-with-express#readme"
+}
