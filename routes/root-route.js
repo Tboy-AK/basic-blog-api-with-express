@@ -1,11 +1,10 @@
 const express = require('express');
+const { apiNavigation } = require('../controllers/root-controller')();
 
 const RootRouter = express.Router();
 
 RootRouter
   .route('/')
-  .get((req, res) => {
-    res.send('Welcome to Tboy-AK Blog API');
-  });
+  .get(apiNavigation);
 
 module.exports = { RootRouter };

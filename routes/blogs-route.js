@@ -1,20 +1,15 @@
 const express = require('express');
+const {
+  readArticle, createArticle, updateArticle, deleteArticle,
+} = require('../controllers/blogs-controller')();
 
 const BlogsRouter = express.Router();
 
 BlogsRouter
   .route('/blogs')
-  .get((req, res) => {
-    res.send('Read blog');
-  })
-  .post((req, res) => {
-    res.send('Create new blog');
-  })
-  .put((req, res) => {
-    res.send('Update blog');
-  })
-  .delete((req, res) => {
-    res.send('Delete blog');
-  });
+  .get(readArticle)
+  .post(createArticle)
+  .put(updateArticle)
+  .delete(deleteArticle);
 
 module.exports = { BlogsRouter };
