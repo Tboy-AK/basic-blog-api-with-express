@@ -1,4 +1,7 @@
 const express = require('express');
+const { RootRouter } = require('./routes/root-route');
+const { UsersRouter } = require('./routes/users-route');
+const { BlogsRouter } = require('./routes/blogs-route');
 require('dotenv').config();
 
 const server = express();
@@ -13,7 +16,12 @@ const normalizePort = () => {
 const port = normalizePort();
 const hostname = process.env.HOSTNAME || 'localhost';
 
-server.get('/', (req, res) => res.send('Welcome to Tboy-AK Blog API'));
+server.use('/', RootRouter);
+
+server.use('/api/v1.0.0', [
+  UsersRouter,
+  BlogsRouter,
+]);
 
 // eslint-disable-next-line no-console
 server.listen(port, () => console.log(`Server listening on ${hostname}:${port}`));
