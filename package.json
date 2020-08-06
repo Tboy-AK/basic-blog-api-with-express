@@ -18,5 +18,17 @@
   "bugs": {
     "url": "https://github.com/Tboy-AK/basic-blog-api-with-express/issues"
   },
-  "homepage": "https://github.com/Tboy-AK/basic-blog-api-with-express#readme"
+  "homepage": "https://github.com/Tboy-AK/basic-blog-api-with-express#readme",
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "jasmine": "^3.6.1"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.1",
+    "jsonwebtoken": "^8.5.1",
+    "request": "^2.88.2"
+  }
 }
