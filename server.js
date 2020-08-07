@@ -18,7 +18,7 @@ server.use('/api/v1.0.0', [
 
 const normalizePort = () => {
   const port = parseInt(process.env.PORT, 10);
-  if (Number.isNaN(port)) return process.env.PORT;
+  if (Number.isNaN(port) && typeof process.env.PORT !== 'undefined') return process.env.PORT;
   if (port >= 0) return port;
   return 3000;
 };

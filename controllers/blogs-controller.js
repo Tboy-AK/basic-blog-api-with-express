@@ -27,19 +27,24 @@ const blogsController = (errResponse, BlogModel) => {
     });
   };
   const updateArticle = (req, res) => {
+    const reqBody = req.body;
+    const article = {
+      content: reqBody.content,
+      updatedAt: Date.now(),
+    };
     BlogModel.findOneAndUpdate(
       {
         _authorId: req.headers.authorization,
         _id: req.params.blogId,
       },
-      req.body,
+      article,
       {
         new: true,
         useFindAndModify: false,
       },
       (err, result) => {
         if (err) errResponse(res, 500, err.message);
-        else res.json(result);
+        else res.status(201).json(result);
       },
     );
   };
