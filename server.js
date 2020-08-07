@@ -6,6 +6,16 @@ require('dotenv').config();
 
 const server = express();
 
+server.use(express.urlencoded({ extended: true }));
+server.use(express.json());
+
+server.use('/', RootRouter);
+
+server.use('/api/v1.0.0', [
+  UsersRouter,
+  BlogsRouter,
+]);
+
 const normalizePort = () => {
   const port = parseInt(process.env.PORT, 10);
   if (Number.isNaN(port)) return process.env.PORT;
@@ -15,13 +25,6 @@ const normalizePort = () => {
 
 const port = normalizePort();
 const hostname = process.env.HOSTNAME || 'localhost';
-
-server.use('/', RootRouter);
-
-server.use('/api/v1.0.0', [
-  UsersRouter,
-  BlogsRouter,
-]);
 
 // eslint-disable-next-line no-console
 server.listen(port, () => console.log(`Server listening on ${hostname}:${port}`));

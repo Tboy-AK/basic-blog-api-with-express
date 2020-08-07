@@ -1,15 +1,56 @@
-const usersController = () => {
+/* eslint-disable no-underscore-dangle */
+
+const blogsController = (errResponse, BlogModel) => {
   const readArticle = (req, res) => {
-    res.send('Read blog');
+    if (req.params.blogId) {
+      BlogModel.findOne({
+        _authorId: req.headers.authorization,
+        _id: req.params.blogId,
+      }, (err, result) => {
+        if (err) errResponse(res, 500, err.message);
+        else res.json(result);
+      });
+    } else {
+      BlogModel.find({ _authorId: req.headers.authorization }, (err, result) => {
+        if (err) errResponse(res, 500, err.message);
+        else res.json(result);
+      });
+    }
   };
   const createArticle = (req, res) => {
-    res.send('Create new blog');
+    const articleRequest = { ...req.body };
+    articleRequest._authorId = req.headers.authorization;
+    const blog = new BlogModel(articleRequest);
+    blog.save((err, result) => {
+      if (err) errResponse(res, 500, err.message);
+      else res.json(result);
+    });
   };
   const updateArticle = (req, res) => {
-    res.send('Update blog');
+    BlogModel.findOneAndUpdate(
+      {
+        _authorId: req.headers.authorization,
+        _id: req.params.blogId,
+      },
+      req.body,
+      {
+        new: true,
+        useFindAndModify: false,
+      },
+      (err, result) => {
+        if (err) errResponse(res, 500, err.message);
+        else res.json(result);
+      },
+    );
   };
   const deleteArticle = (req, res) => {
-    res.send('Delete blog');
+    BlogModel.findOneAndDelete({
+      _authorId: req.headers.authorization,
+      _id: req.params.blogId,
+    }, (err) => {
+      if (err) errResponse(res, 500, err.message);
+      else res.send('Article successfully deleted');
+    });
   };
 
   return {
@@ -17,4 +58,4 @@ const usersController = () => {
   };
 };
 
-module.exports = usersController;
+module.exports = blogsController;
