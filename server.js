@@ -1,6 +1,7 @@
 const express = require('express');
 const { RootRouter } = require('./routes/root-route');
 const { UsersRouter } = require('./routes/users-route');
+const { AuthsRouter } = require('./routes/auths-route');
 const { BlogsRouter } = require('./routes/blogs-route');
 require('dotenv').config();
 
@@ -13,6 +14,7 @@ server.use('/', RootRouter);
 
 server.use('/api/v1.0.0', [
   UsersRouter,
+  AuthsRouter,
   BlogsRouter,
 ]);
 

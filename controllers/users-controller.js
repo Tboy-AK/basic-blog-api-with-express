@@ -1,6 +1,13 @@
 const { generateHash } = require('../utils/hash-handler');
 
 const usersController = (errResponse, UserModel) => {
+  const getAllUsers = (req, res) => {
+    UserModel.find({}, (err, result) => {
+      if (err) errResponse(res, 500, err.message);
+      else res.json(result);
+    });
+  };
+
   const userSignup = async (req, res) => {
     const reqData = req.body;
     let passwordHash;
@@ -29,7 +36,7 @@ const usersController = (errResponse, UserModel) => {
     });
   };
 
-  return { userSignup };
+  return { userSignup, getAllUsers };
 };
 
 module.exports = usersController;
