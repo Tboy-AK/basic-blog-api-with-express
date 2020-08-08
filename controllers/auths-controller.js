@@ -46,7 +46,11 @@ const authsController = (errResponse, UserModel) => {
     });
   };
 
-  return { userSignin };
+  const changeUserPassword = (req, res) => {
+    res.send('Successfully changed password');
+  };
+
+  return { userSignin, changeUserPassword };
 };
 
 module.exports = authsController;
