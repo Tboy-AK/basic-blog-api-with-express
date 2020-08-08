@@ -7,7 +7,6 @@ const {
 const authenticateUser = require('../middleware/auth-middleware')(errResponse);
 
 const BlogsRouter = express.Router();
-const BlogsPublicRouter = express.Router();
 
 BlogsRouter
   .use(authenticateUser);
@@ -23,12 +22,4 @@ BlogsRouter
   .put(updateArticle)
   .delete(deleteArticle);
 
-BlogsPublicRouter
-  .route('/blogs')
-  .get(readArticle);
-
-BlogsPublicRouter
-  .route('/blogs/:blogId')
-  .get(readArticle);
-
-module.exports = { BlogsRouter, BlogsPublicRouter };
+module.exports = { BlogsRouter };

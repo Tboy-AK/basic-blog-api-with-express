@@ -18,6 +18,7 @@ const blogsController = (errResponse, BlogModel) => {
       });
     }
   };
+
   const createArticle = (req, res) => {
     const { uid } = req.headers.userAccessPayload;
     const articleRequest = { ...req.body };
@@ -28,6 +29,7 @@ const blogsController = (errResponse, BlogModel) => {
       else res.json(result);
     });
   };
+
   const updateArticle = (req, res) => {
     const { uid } = req.headers.userAccessPayload;
     const reqBody = req.body;
@@ -51,6 +53,7 @@ const blogsController = (errResponse, BlogModel) => {
       },
     );
   };
+
   const deleteArticle = (req, res) => {
     const { uid } = req.headers.userAccessPayload;
     BlogModel.findOneAndDelete({
