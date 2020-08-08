@@ -5,10 +5,10 @@ const { AuthsRouter } = require('./routes/auths-route');
 const { BlogsRouter } = require('./routes/blogs-route');
 require('dotenv').config();
 
-const server = express();
+const { urlencoded, json } = express;
 
-server.use(express.urlencoded({ extended: true }));
-server.use(express.json());
+const server = express();
+server.use([urlencoded({ extended: true }), json()]);
 
 server.use('/', RootRouter);
 
