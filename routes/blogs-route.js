@@ -4,13 +4,18 @@ const BlogModel = require('../models/blogs-model');
 const {
   readArticle, createArticle, updateArticle, deleteArticle,
 } = require('../controllers/blogs-controller')(errResponse, BlogModel);
+const authenticateUser = require('../middleware/auth-middleware')(errResponse);
 
 const BlogsRouter = express.Router();
+const BlogsPublicRouter = express.Router();
+
+BlogsRouter
+  .use(authenticateUser);
 
 BlogsRouter
   .route('/blogs')
-  .get(readArticle)
-  .post(createArticle);
+  .post(createArticle)
+  .get(readArticle);
 
 BlogsRouter
   .route('/blogs/:blogId')
@@ -18,4 +23,12 @@ BlogsRouter
   .put(updateArticle)
   .delete(deleteArticle);
 
-module.exports = { BlogsRouter };
+BlogsPublicRouter
+  .route('/blogs')
+  .get(readArticle);
+
+BlogsPublicRouter
+  .route('/blogs/:blogId')
+  .get(readArticle);
+
+module.exports = { BlogsRouter, BlogsPublicRouter };

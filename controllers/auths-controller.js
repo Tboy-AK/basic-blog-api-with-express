@@ -15,15 +15,15 @@ const authsController = (errResponse, UserModel) => {
 
         // configure user tokens
         const aud = 'user';
-        const iss = 'Howmies Entreprise';
+        const iss = 'SUA';
         const algorithm = 'HS256';
         const tokenOptions = { algorithm, issuer: iss, audience: aud };
         const accessToken = jwt.sign({
           uid: _id, email, exp: Math.floor(Date.now() / 1000) + (900),
-        }, 'accessSecret', tokenOptions);
+        }, process.env.ACCESS_SECRET, tokenOptions);
         const refreshToken = jwt.sign({
           uid: _id, email, exp: Math.floor(Date.now() / 1000) + (3600 * 24 * 30),
-        }, 'refreshSecret', tokenOptions);
+        }, process.env.REFRESH_SECRET, tokenOptions);
 
         res
           .status(201)

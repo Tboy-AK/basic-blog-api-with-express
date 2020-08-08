@@ -2,24 +2,26 @@
 
 const blogsController = (errResponse, BlogModel) => {
   const readArticle = (req, res) => {
+    const { uid } = req.headers.userAccessPayload;
     if (req.params.blogId) {
       BlogModel.findOne({
-        _authorId: req.headers.authorization,
+        _authorId: uid,
         _id: req.params.blogId,
       }, (err, result) => {
         if (err) errResponse(res, 500, err.message);
         else res.json(result);
       });
     } else {
-      BlogModel.find({ _authorId: req.headers.authorization }, (err, result) => {
+      BlogModel.find({ _authorId: uid }, (err, result) => {
         if (err) errResponse(res, 500, err.message);
         else res.json(result);
       });
     }
   };
   const createArticle = (req, res) => {
+    const { uid } = req.headers.userAccessPayload;
     const articleRequest = { ...req.body };
-    articleRequest._authorId = req.headers.authorization;
+    articleRequest._authorId = uid;
     const blog = new BlogModel(articleRequest);
     blog.save((err, result) => {
       if (err) errResponse(res, 500, err.message);
@@ -27,6 +29,7 @@ const blogsController = (errResponse, BlogModel) => {
     });
   };
   const updateArticle = (req, res) => {
+    const { uid } = req.headers.userAccessPayload;
     const reqBody = req.body;
     const article = {
       content: reqBody.content,
@@ -34,7 +37,7 @@ const blogsController = (errResponse, BlogModel) => {
     };
     BlogModel.findOneAndUpdate(
       {
-        _authorId: req.headers.authorization,
+        _authorId: uid,
         _id: req.params.blogId,
       },
       article,
@@ -49,8 +52,9 @@ const blogsController = (errResponse, BlogModel) => {
     );
   };
   const deleteArticle = (req, res) => {
+    const { uid } = req.headers.userAccessPayload;
     BlogModel.findOneAndDelete({
-      _authorId: req.headers.authorization,
+      _authorId: uid,
       _id: req.params.blogId,
     }, (err) => {
       if (err) errResponse(res, 500, err.message);
