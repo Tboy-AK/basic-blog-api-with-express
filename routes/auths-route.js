@@ -1,6 +1,6 @@
 const express = require('express');
 const errResponse = require('../utils/error-response-handler');
-const UserModel = require('../models/users-model');
+const UserModel = require('../models/postgres/users-model');
 const { userSignin, changeUserPassword } = require('../controllers/auths-controller')(errResponse, UserModel);
 
 const AuthsRouter = express.Router();

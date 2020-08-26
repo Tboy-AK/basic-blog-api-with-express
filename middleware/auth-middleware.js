@@ -11,7 +11,10 @@ const authMiddleware = (errResponse) => {
       next();
     } catch (err) {
       if (err instanceof TokenExpiredError) errResponse(res, 403, 'Session expired');
-      else errResponse(res, 401);
+      else {
+        console.error(err);
+        errResponse(res, 401);
+      }
     }
   };
   return verifyUserAccess;

@@ -6,11 +6,11 @@ const authsController = (errResponse, UserModel) => {
   const userSignin = async (req, res) => {
     const reqData = req.body;
 
-    UserModel.findOne({ email: reqData.email }, (err, result) => {
-      if (err) errResponse(res, 500, err.message);
-      else if (!result) errResponse(res, 401);
-      else if (!verifyHash(reqData.password, result.password)) errResponse(res, 401, 'Invalid credentials');
-      else {
+    return UserModel.select('*')
+      .then((results) => {
+        if (results.length === 0) return errResponse(res, 401);
+        const result = results[0];
+        if (!verifyHash(reqData.password, result.password)) return errResponse(res, 401, 'Invalid credentials');
         const { _id, email } = result;
 
         // configure user tokens
@@ -42,8 +42,11 @@ const authsController = (errResponse, UserModel) => {
             accessExp: 900000,
             refreshExp: 30 * 24 * 3600000,
           });
-      }
-    });
+      })
+      .catch((err) => {
+        console.error(err);
+        return errResponse(res, 500, err.message);
+      });
   };
 
   const changeUserPassword = (req, res) => {

@@ -2,10 +2,12 @@ const { generateHash } = require('../utils/hash-handler');
 
 const usersController = (errResponse, UserModel) => {
   const getAllUsers = (req, res) => {
-    UserModel.find({}, (err, result) => {
-      if (err) errResponse(res, 500, err.message);
-      else res.json(result);
-    });
+    UserModel.select('*')
+      .then((result) => {
+        console.log('get all');
+        res.json(result);
+      })
+      .catch((err) => errResponse(res, 500, err.message));
   };
 
   const userSignup = async (req, res) => {
@@ -17,23 +19,22 @@ const usersController = (errResponse, UserModel) => {
       return errResponse(res, 400, err.message);
     }
     const user = {
-      email: reqData.email,
+      ...reqData,
       password: passwordHash,
     };
-    const newUser = new UserModel(user);
-    newUser.save((err, result) => {
-      if (err) {
+    return UserModel.insert(user, '*')
+      .then((result) => res.status(201).json(result))
+      .catch((err) => {
         switch (err.code) {
-          case 11000:
-            errResponse(res, 403, 'User already exists');
-            break;
+          case '23505':
+            console.error(err);
+            return errResponse(res, 403, 'User already exists');
 
           default:
-            errResponse(res, 500, err.message);
-            break;
+            console.error(err);
+            return errResponse(res, 500, err.message);
         }
-      } else res.status(201).json(result);
-    });
+      });
   };
 
   return { userSignup, getAllUsers };

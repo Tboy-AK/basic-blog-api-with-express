@@ -4,30 +4,45 @@ const blogsController = (errResponse, BlogModel) => {
   const readArticle = (req, res) => {
     const { uid } = req.headers.userAccessPayload;
     if (req.params.blogId) {
-      BlogModel.findOne({
-        _authorId: uid,
-        _id: req.params.blogId,
-      }, (err, result) => {
-        if (err) errResponse(res, 500, err.message);
-        else res.json(result);
-      });
-    } else {
-      BlogModel.find({ _authorId: uid }, (err, result) => {
-        if (err) errResponse(res, 500, err.message);
-        else res.json(result);
-      });
+      return BlogModel
+        .select('*')
+        .where({
+          auth_id: uid,
+          _id: req.params.blogId,
+        })
+        .then((results) => {
+          const result = results[0];
+          res.status(201).json(result);
+        })
+        .catch((err) => {
+          console.error(err);
+          errResponse(res, 500, err.message);
+        });
     }
+    return BlogModel
+      .select('*')
+      .where({ auth_id: uid })
+      .then((result) => res.json(result))
+      .catch((err) => {
+        console.error(err);
+        errResponse(res, 500, err.message);
+      });
   };
 
   const createArticle = (req, res) => {
     const { uid } = req.headers.userAccessPayload;
     const articleRequest = { ...req.body };
-    articleRequest._authorId = uid;
-    const blog = new BlogModel(articleRequest);
-    blog.save((err, result) => {
-      if (err) errResponse(res, 500, err.message);
-      else res.json(result);
-    });
+    articleRequest.auth_id = uid;
+    return BlogModel
+      .insert(articleRequest, '*')
+      .then((results) => {
+        const result = results[0];
+        res.status(201).json(result);
+      })
+      .catch((err) => {
+        console.error(err);
+        errResponse(res, 500, err.message);
+      });
   };
 
   const updateArticle = (req, res) => {
@@ -35,34 +50,36 @@ const blogsController = (errResponse, BlogModel) => {
     const reqBody = req.body;
     const article = {
       content: reqBody.content,
-      updatedAt: Date.now(),
     };
-    BlogModel.findOneAndUpdate(
-      {
-        _authorId: uid,
+    return BlogModel
+      .update(article, '*')
+      .where({
+        auth_id: uid,
         _id: req.params.blogId,
-      },
-      article,
-      {
-        new: true,
-        useFindAndModify: false,
-      },
-      (err, result) => {
-        if (err) errResponse(res, 500, err.message);
-        else res.status(201).json(result);
-      },
-    );
+      })
+      .then((results) => {
+        const result = results[0];
+        res.status(201).json(result);
+      })
+      .catch((err) => {
+        console.error(err);
+        errResponse(res, 500, err.message);
+      });
   };
 
   const deleteArticle = (req, res) => {
     const { uid } = req.headers.userAccessPayload;
-    BlogModel.findOneAndDelete({
-      _authorId: uid,
-      _id: req.params.blogId,
-    }, (err) => {
-      if (err) errResponse(res, 500, err.message);
-      else res.send('Article successfully deleted');
-    });
+    return BlogModel
+      .del()
+      .where({
+        auth_id: uid,
+        _id: req.params.blogId,
+      })
+      .then(() => res.send('Article successfully deleted'))
+      .catch((err) => {
+        console.error(err);
+        errResponse(res, 500, err.message);
+      });
   };
 
   return {
