@@ -1,0 +1,29 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "Coded4Master",
+    "database": "sua-basic-blog-api-with-express",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres",
+    "define": {
+      "timestamps": true
+    }
+  },
+  "test": {
+    "username": "postgres",
+    "password": "Coded4Master",
+    "database": "sua-basic-blog-api-with-express",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "Coded4Master",
+    "database": "sua-basic-blog-api-with-express",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}

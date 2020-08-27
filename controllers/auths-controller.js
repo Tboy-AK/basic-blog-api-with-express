@@ -6,12 +6,15 @@ const authsController = (errResponse, UserModel) => {
   const userSignin = async (req, res) => {
     const reqData = req.body;
 
-    return UserModel.select('*')
-      .then((results) => {
-        if (results.length === 0) return errResponse(res, 401);
-        const result = results[0];
+    return UserModel.findOne(
+      {
+        where: {
+          email: reqData.email,
+        },
+      }).then((result) => {
+        if (!result) return errResponse(res, 401);
         if (!verifyHash(reqData.password, result.password)) return errResponse(res, 401, 'Invalid credentials');
-        const { _id, email } = result;
+        const { id, email } = result;
 
         // configure user tokens
         const aud = 'user';
@@ -19,10 +22,10 @@ const authsController = (errResponse, UserModel) => {
         const algorithm = 'HS256';
         const tokenOptions = { algorithm, issuer: iss, audience: aud };
         const accessToken = jwt.sign({
-          uid: _id, email, exp: Math.floor(Date.now() / 1000) + (900),
+          uid: id, email, exp: Math.floor(Date.now() / 1000) + (900),
         }, process.env.ACCESS_SECRET, tokenOptions);
         const refreshToken = jwt.sign({
-          uid: _id, email, exp: Math.floor(Date.now() / 1000) + (3600 * 24 * 30),
+          uid: id, email, exp: Math.floor(Date.now() / 1000) + (3600 * 24 * 30),
         }, process.env.REFRESH_SECRET, tokenOptions);
 
         res

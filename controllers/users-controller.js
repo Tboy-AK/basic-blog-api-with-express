@@ -2,10 +2,10 @@ const { generateHash } = require('../utils/hash-handler');
 
 const usersController = (errResponse, UserModel) => {
   const getAllUsers = (req, res) => {
-    UserModel.select('*')
-      .then((result) => {
+    UserModel.findAll()
+      .then((results) => {
         console.log('get all');
-        res.json(result);
+        res.json(results);
       })
       .catch((err) => errResponse(res, 500, err.message));
   };
@@ -22,8 +22,8 @@ const usersController = (errResponse, UserModel) => {
       ...reqData,
       password: passwordHash,
     };
-    return UserModel.insert(user, '*')
-      .then((result) => res.status(201).json(result))
+    return UserModel.create(user, { fields: ['firstName', 'lastName', 'email', 'password', 'phone'] })
+      .then((results) => res.status(201).json(results))
       .catch((err) => {
         switch (err.code) {
           case '23505':

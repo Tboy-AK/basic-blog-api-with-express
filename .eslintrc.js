@@ -7,8 +7,7 @@ module.exports = {
     browser: true,
     commonjs: true,
     es2020: true,
-    knex: true,
-    migrations: true,
+    sequelize: true,
   },
 
   extends: [

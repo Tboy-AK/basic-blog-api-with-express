@@ -3,15 +3,15 @@
 const blogsController = (errResponse, BlogModel) => {
   const readArticle = (req, res) => {
     const { uid } = req.headers.userAccessPayload;
+    console.log(uid, req.body.content);
     if (req.params.blogId) {
-      return BlogModel
-        .select('*')
-        .where({
-          auth_id: uid,
-          _id: req.params.blogId,
-        })
-        .then((results) => {
-          const result = results[0];
+      return BlogModel.findOne({
+        where: {
+          authorId: uid,
+          id: req.params.blogId,
+        },
+      })
+        .then((result) => {
           res.status(201).json(result);
         })
         .catch((err) => {
@@ -19,10 +19,11 @@ const blogsController = (errResponse, BlogModel) => {
           errResponse(res, 500, err.message);
         });
     }
-    return BlogModel
-      .select('*')
-      .where({ auth_id: uid })
-      .then((result) => res.json(result))
+    return BlogModel.findAll({ where: { authorId: uid } })
+      .then((results) => {
+        console.log('all my blogs');
+        res.json(results);
+      })
       .catch((err) => {
         console.error(err);
         errResponse(res, 500, err.message);
@@ -32,9 +33,8 @@ const blogsController = (errResponse, BlogModel) => {
   const createArticle = (req, res) => {
     const { uid } = req.headers.userAccessPayload;
     const articleRequest = { ...req.body };
-    articleRequest.auth_id = uid;
-    return BlogModel
-      .insert(articleRequest, '*')
+    articleRequest.authorId = uid;
+    return BlogModel.create(articleRequest, { fields: ['content'] })
       .then((results) => {
         const result = results[0];
         res.status(201).json(result);
@@ -54,7 +54,7 @@ const blogsController = (errResponse, BlogModel) => {
     return BlogModel
       .update(article, '*')
       .where({
-        auth_id: uid,
+        authorId: uid,
         _id: req.params.blogId,
       })
       .then((results) => {
@@ -72,7 +72,7 @@ const blogsController = (errResponse, BlogModel) => {
     return BlogModel
       .del()
       .where({
-        auth_id: uid,
+        authorId: uid,
         _id: req.params.blogId,
       })
       .then(() => res.send('Article successfully deleted'))

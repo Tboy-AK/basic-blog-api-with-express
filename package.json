@@ -25,7 +25,8 @@
     "eslint": "^7.6.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
-    "jasmine": "^3.6.1"
+    "jasmine": "^3.6.1",
+    "sequelize-cli": "^6.2.0"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -36,6 +37,8 @@
     "knex": "^0.21.5",
     "mongoose": "^5.9.27",
     "pg": "^8.3.2",
-    "request": "^2.88.2"
+    "pg-hstore": "^2.3.3",
+    "request": "^2.88.2",
+    "sequelize": "^6.3.4"
   }
 }
