@@ -1,5 +1,5 @@
 const { pg } = require('../../configs/knex-pg-config');
 
-const usersModel = pg.schema('users');
+const usersModel = pg('auths');
 
 module.exports = usersModel;
