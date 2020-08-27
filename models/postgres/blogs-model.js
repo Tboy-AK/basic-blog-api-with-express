@@ -1,4 +1,4 @@
-const { pg } = require('../../configs/rdbms-config');
+const { pg } = require('../../configs/knex-pg-config');
 
 const blogsModel = pg('blogs');
 

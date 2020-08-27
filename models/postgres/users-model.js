@@ -1,5 +1,5 @@
-const { pg } = require('../../configs/rdbms-config');
+const { pg } = require('../../configs/knex-pg-config');
 
-const usersModel = pg('auths');
+const usersModel = pg.schema('users');
 
 module.exports = usersModel;
